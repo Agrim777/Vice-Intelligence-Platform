@@ -1,5 +1,5 @@
 import { Link, useLocation } from "wouter";
-import { PenTool, Library, LayoutDashboard, TerminalSquare } from "lucide-react";
+import { PenTool, Library, LayoutDashboard, TerminalSquare, Layers } from "lucide-react";
 
 export function Layout({ children }: { children: React.ReactNode }) {
   const [location] = useLocation();
@@ -7,6 +7,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
   const navItems = [
     { href: "/", label: "Dashboard", icon: LayoutDashboard },
     { href: "/generate", label: "Studio", icon: PenTool },
+    { href: "/bulk", label: "Bulk Generate", icon: Layers },
     { href: "/articles", label: "Library", icon: Library },
   ];
 

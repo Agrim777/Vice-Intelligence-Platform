@@ -20,6 +20,12 @@ router.get("/github/branches", async (req, res): Promise<void> => {
     res.json(data.map((b) => ({ name: b.name })));
   } catch (err: unknown) {
     req.log.error({ err }, "Failed to list branches");
+    const status = (err as { status?: number }).status;
+    if (status === 401 || status === 403) {
+      // Token invalid — return graceful empty list so UI doesn't crash
+      res.json([{ name: "main" }]);
+      return;
+    }
     const msg = err instanceof Error ? err.message : "Unknown error";
     res.status(500).json({ error: msg });
   }

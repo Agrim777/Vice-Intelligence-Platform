@@ -5,6 +5,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { Layout } from "@/components/layout";
 import { Home } from "@/pages/home";
 import { Generate } from "@/pages/generate";
+import { BulkGenerate } from "@/pages/bulk-generate";
 import { Articles } from "@/pages/articles";
 import { ArticleDetail } from "@/pages/article-detail";
 import NotFound from "@/pages/not-found";
@@ -24,6 +25,7 @@ function Router() {
       <Switch>
         <Route path="/" component={Home} />
         <Route path="/generate" component={Generate} />
+        <Route path="/bulk" component={BulkGenerate} />
         <Route path="/articles" component={Articles} />
         <Route path="/articles/:id" component={ArticleDetail} />
         <Route component={NotFound} />
