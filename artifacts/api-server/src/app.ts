@@ -41,7 +41,11 @@ if (process.env.NODE_ENV === "production") {
 
   if (existsSync(staticDir)) {
     app.use(express.static(staticDir));
-    app.get("*", (_req, res) => {
+    // SPA fallback. Express 5 uses path-to-regexp v8 which no longer accepts
+    // the bare "*" string — use a middleware to catch all unmatched GETs.
+    app.use((req, res, next) => {
+      if (req.method !== "GET") return next();
+      if (req.path.startsWith("/api")) return next();
       res.sendFile(join(staticDir, "index.html"));
     });
   }
