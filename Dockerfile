@@ -1,20 +1,23 @@
-FROM node:24-alpine
+FROM node:24-slim
 
-# Enable corepack for pnpm
-RUN corepack enable && corepack prepare pnpm@latest --activate
+# Install exact pnpm version matching the lockfile
+RUN npm install -g pnpm@10.26.1
 
 WORKDIR /app
 
-# Copy all workspace files
+# Copy workspace config first
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+
+# Copy all source
 COPY . .
 
-# Install all dependencies
-RUN pnpm install
+# Install dependencies — no frozen lockfile so pnpm can reconcile settings
+RUN pnpm install --no-frozen-lockfile
 
-# Build frontend (Vite requires PORT and BASE_PATH at config evaluation time)
+# Build content-studio frontend (Vite requires PORT + BASE_PATH at config eval time)
 RUN PORT=3000 BASE_PATH=/ NODE_ENV=production pnpm --filter @workspace/content-studio run build
 
-# Build lib type declarations, then API server
+# Build lib type declarations then API server
 RUN pnpm run typecheck:libs && pnpm --filter @workspace/api-server run build
 
 ENV NODE_ENV=production
