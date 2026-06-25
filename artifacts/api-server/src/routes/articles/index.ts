@@ -14,9 +14,22 @@ import { Octokit } from "@octokit/rest";
 
 const router: IRouter = Router();
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
+// Lazy-initialize OpenAI client so the server doesn't crash on startup when
+// OPENAI_API_KEY is missing. The OpenAI v6 SDK throws synchronously from its
+// constructor if no key is provided, which previously took down the entire
+// process on Railway.
+let _openai: OpenAI | null = null;
+function getOpenAI(): OpenAI {
+  if (_openai) return _openai;
+  const apiKey = process.env.OPENAI_API_KEY;
+  if (!apiKey) {
+    throw new Error(
+      "OPENAI_API_KEY environment variable is not set. Add it in Railway → Variables to enable article generation.",
+    );
+  }
+  _openai = new OpenAI({ apiKey });
+  return _openai;
+}
 
 const SYSTEM_PROMPT = `You are the Chief Content Editor for a GTA 6-focused gaming publication.
 
@@ -166,7 +179,7 @@ router.post("/articles/generate", async (req, res): Promise<void> => {
   let fullContent = "";
 
   try {
-    const stream = await openai.chat.completions.create({
+    const stream = await getOpenAI().chat.completions.create({
       model: "gpt-4o",
       max_tokens: 8192,
       messages: [
