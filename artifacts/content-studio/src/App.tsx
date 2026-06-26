@@ -11,6 +11,8 @@ import { Guides } from "@/pages/guides";
 import { Cheats } from "@/pages/cheats";
 import { Vehicles } from "@/pages/vehicles";
 import { Weapons } from "@/pages/weapons";
+import { Maps } from "@/pages/maps";
+import { Gear } from "@/pages/gear";
 
 import { Home as AdminHome } from "@/pages/admin/home";
 import { Generate } from "@/pages/generate";
@@ -41,6 +43,8 @@ function Router() {
         <Route path="/cheats" component={Cheats} />
         <Route path="/vehicles" component={Vehicles} />
         <Route path="/weapons" component={Weapons} />
+        <Route path="/maps" component={Maps} />
+        <Route path="/gear" component={Gear} />
 
         {/* Admin / Content Studio */}
         <Route path="/admin" component={AdminHome} />
