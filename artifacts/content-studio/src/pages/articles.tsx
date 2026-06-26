@@ -5,7 +5,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { Search, Plus, Trash2, ExternalLink } from "lucide-react";
 import { format } from "date-fns";
 import { Skeleton } from "@/components/ui/skeleton";
-import { StatusBadge } from "@/pages/home";
+import { StatusBadge } from "@/components/status-badge";
 import { Badge } from "@/components/ui/badge";
 
 const STATUSES = ["all", "done", "published", "generating", "error", "pending"] as const;
@@ -39,7 +39,7 @@ export function Articles() {
           <h1 className="text-3xl font-display font-bold tracking-tight">Article Library</h1>
           <p className="text-muted-foreground mt-1">{articles.length} articles total</p>
         </div>
-        <Link href="/generate">
+        <Link href="/admin/generate">
           <div className="inline-flex items-center gap-2 bg-primary text-primary-foreground hover:bg-primary/90 rounded-md px-4 py-2 text-sm font-semibold transition-colors cursor-pointer" data-testid="button-new-article">
             <Plus className="w-4 h-4" />
             New Article
@@ -100,7 +100,7 @@ export function Articles() {
             {filtered.map((article) => (
               <div key={article.id} className="group flex items-center gap-4 p-4 hover:bg-secondary/40 transition-colors" data-testid={`row-article-${article.id}`}>
                 <div className="flex-1 min-w-0">
-                  <Link href={`/articles/${article.id}`}>
+                  <Link href={`/admin/articles/${article.id}`}>
                     <div className="font-medium text-sm truncate group-hover:text-primary transition-colors cursor-pointer" data-testid={`text-topic-${article.id}`}>
                       {article.topic}
                     </div>

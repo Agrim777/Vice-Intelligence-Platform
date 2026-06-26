@@ -3,11 +3,21 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { Layout } from "@/components/layout";
+
 import { Home } from "@/pages/home";
+import { News } from "@/pages/news";
+import { Games } from "@/pages/games";
+import { Guides } from "@/pages/guides";
+import { Cheats } from "@/pages/cheats";
+import { Vehicles } from "@/pages/vehicles";
+import { Weapons } from "@/pages/weapons";
+
+import { Home as AdminHome } from "@/pages/admin/home";
 import { Generate } from "@/pages/generate";
 import { BulkGenerate } from "@/pages/bulk-generate";
 import { Articles } from "@/pages/articles";
 import { ArticleDetail } from "@/pages/article-detail";
+
 import NotFound from "@/pages/not-found";
 
 const queryClient = new QueryClient({
@@ -23,11 +33,22 @@ function Router() {
   return (
     <Layout>
       <Switch>
+        {/* Public gamer site */}
         <Route path="/" component={Home} />
-        <Route path="/generate" component={Generate} />
-        <Route path="/bulk" component={BulkGenerate} />
-        <Route path="/articles" component={Articles} />
-        <Route path="/articles/:id" component={ArticleDetail} />
+        <Route path="/news" component={News} />
+        <Route path="/games" component={Games} />
+        <Route path="/guides" component={Guides} />
+        <Route path="/cheats" component={Cheats} />
+        <Route path="/vehicles" component={Vehicles} />
+        <Route path="/weapons" component={Weapons} />
+
+        {/* Admin / Content Studio */}
+        <Route path="/admin" component={AdminHome} />
+        <Route path="/admin/generate" component={Generate} />
+        <Route path="/admin/bulk" component={BulkGenerate} />
+        <Route path="/admin/articles" component={Articles} />
+        <Route path="/admin/articles/:id" component={ArticleDetail} />
+
         <Route component={NotFound} />
       </Switch>
     </Layout>

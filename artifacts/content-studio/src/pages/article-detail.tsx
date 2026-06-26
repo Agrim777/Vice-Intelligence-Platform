@@ -23,7 +23,7 @@ import {
 import { format } from "date-fns";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Badge } from "@/components/ui/badge";
-import { StatusBadge } from "@/pages/home";
+import { StatusBadge } from "@/components/status-badge";
 
 export function ArticleDetail() {
   const [, params] = useRoute("/articles/:id");
@@ -105,7 +105,7 @@ export function ArticleDetail() {
       <div className="flex items-start justify-between gap-4">
         <div className="flex items-start gap-3">
           <button
-            onClick={() => setLocation("/articles")}
+            onClick={() => setLocation("/admin/articles")}
             className="mt-1 text-muted-foreground hover:text-foreground transition-colors"
             data-testid="button-back"
           >
