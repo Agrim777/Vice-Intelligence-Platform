@@ -1,13 +1,83 @@
-import { useState } from "react";
-import { Search, Gamepad2, Monitor, Smartphone } from "lucide-react";
+import { useState, useEffect } from "react";
+import { Search, Gamepad2, Monitor, Smartphone, ChevronDown, ChevronUp } from "lucide-react";
 import { CHEAT_GAMES, CATEGORIES, type Cheat } from "@/data/cheats";
+import { setPageMeta } from "@/lib/seo";
+
+const HOW_TO_ENTER: Record<string, { ps: string; xbox: string; pc: string; phone?: string; notes?: string[] }> = {
+  "gta5": {
+    ps: "Pause the game is NOT required. Enter the button sequence quickly on the controller — you'll see a small confirmation message appear top-left of screen.",
+    xbox: "Same as PlayStation — enter the button sequence during gameplay. No pause menu required.",
+    pc: "During gameplay, press the tilde key (~) to open the console, then type the cheat word and press Enter. Or type directly without opening the console on some versions.",
+    phone: "Open your in-game phone → Contacts → dial the number. The cheat activates immediately.",
+    notes: [
+      "Cheats marked ⚠ 'Disables Achievements' will block trophies/achievements for that session — reloading a save restores them.",
+      "GTA Online cheats: most cheat codes do NOT work in GTA Online multiplayer sessions — story mode only.",
+      "Cheat codes do not save — you must re-enter them each session.",
+      "Some cheats stack: use Slow Motion 3× for maximum effect.",
+    ],
+  },
+  "san-andreas": {
+    ps: "Enter the button sequence during gameplay — no pause required. A text message confirms activation.",
+    xbox: "Same as PlayStation. Enter button sequence during gameplay.",
+    pc: "Type the cheat word directly during gameplay (no console needed). A small message confirms it worked.",
+    notes: [
+      "San Andreas cheats do NOT disable achievements on PS2/Xbox original. PC and remastered versions vary.",
+      "Some cheats permanently affect your save if used at wrong times — 'RECRUIT ANYONE' can break gang AI.",
+      "Best cheat combos: Jetpack + Infinite Health = explore the map freely. Rhino Tank + Max Wanted Level = ultimate chaos sandbox.",
+      "Cheat effects persist until you load a save or enter the opposite cheat (e.g., sunny weather vs foggy weather).",
+    ],
+  },
+  "vice-city": {
+    ps: "Enter during gameplay — no pause. Confirmation text appears briefly on screen.",
+    xbox: "Enter during gameplay. Confirmation message appears.",
+    pc: "Type the cheat word during gameplay. No console prefix needed.",
+    notes: [
+      "Vice City cheats don't disable achievements (original versions had no achievement system).",
+      "Skin cheats (like 'CERTAINDEATH' for bikini girl) change Tommy's appearance permanently until you load or enter another skin cheat.",
+      "Best cheat combos: PANZER (Rhino) + PRECIOUSPROTECTION (armor) + LEAVEMEALONE (wanted level) = indestructible Tommy.",
+      "The 'BIGBANG' cheat explodes every vehicle nearby — use with caution near your own car.",
+    ],
+  },
+  "gta4": {
+    ps: "Open your in-game phone → dial the number shown.",
+    xbox: "Open your in-game phone → dial the number shown.",
+    pc: "Open your in-game phone (F1) → dial the number.",
+    notes: [
+      "GTA IV ONLY uses phone number cheats — there are no button sequence cheats.",
+      "Cheats disable achievements permanently for that save file in GTA IV — use a separate save slot.",
+      "Weapon sets replace your current loadout — use only when you need a full restock.",
+      "Best combo: Max Health + Max Armor + Wanted Level Remover = near-invincible Niko for exploration.",
+    ],
+  },
+  "gta3": {
+    ps: "Enter the button sequence during gameplay. No pause needed. Confirmation appears briefly.",
+    xbox: "Enter during gameplay.",
+    pc: "Type the cheat word directly during gameplay.",
+    notes: [
+      "GTA III cheats don't disable achievements (the game predates modern achievement systems).",
+      "The 'ILIKEDRESSINGUP' cheat cycles through random pedestrian skins for Claude.",
+      "Best combo: Tank cheat + Flying Cars cheat = the most chaotic experience in GTA history.",
+      "Weapons cheats in GTA III give ALL weapons at once — ideal for story progression if stuck.",
+    ],
+  },
+};
 
 export function Cheats() {
   const [selectedGame, setSelectedGame] = useState(CHEAT_GAMES[0].slug);
   const [category, setCategory] = useState("All");
   const [search, setSearch] = useState("");
+  const [showHowTo, setShowHowTo] = useState(false);
+
+  useEffect(() => {
+    setPageMeta({
+      title: "GTA Cheat Codes — All Games, All Platforms (PS, Xbox, PC, Phone)",
+      description: "Complete GTA cheat code database for every game: GTA 5, GTA San Andreas, Vice City, GTA 4, and GTA 3. PS, Xbox, PC keyboard codes and phone numbers. Updated 2025.",
+      path: "/cheats",
+    });
+  }, []);
 
   const game = CHEAT_GAMES.find((g) => g.slug === selectedGame) ?? CHEAT_GAMES[0];
+  const howTo = HOW_TO_ENTER[selectedGame];
   const filtered = game.cheats.filter((c) => {
     const matchCat = category === "All" || c.category === category;
     const matchSearch = !search || c.name.toLowerCase().includes(search.toLowerCase()) || c.effect.toLowerCase().includes(search.toLowerCase());
@@ -19,7 +89,7 @@ export function Cheats() {
       {/* Header */}
       <div>
         <h1 className="font-headline text-5xl md:text-6xl">CHEAT CODES</h1>
-        <p className="text-muted-foreground mt-2">Every cheat code for every GTA game — PS, Xbox, PC, and phone numbers.</p>
+        <p className="text-muted-foreground mt-2">Every cheat code for every GTA game — PS, Xbox, PC, and phone numbers. Click any code to copy it.</p>
       </div>
 
       {/* Game Selector */}
@@ -27,7 +97,7 @@ export function Cheats() {
         {CHEAT_GAMES.map((g) => (
           <button
             key={g.slug}
-            onClick={() => { setSelectedGame(g.slug); setCategory("All"); setSearch(""); }}
+            onClick={() => { setSelectedGame(g.slug); setCategory("All"); setSearch(""); setShowHowTo(false); }}
             className={`px-4 py-2 rounded-md text-sm font-semibold transition-colors border ${
               selectedGame === g.slug
                 ? "bg-primary text-primary-foreground border-primary glow-pink-sm"
@@ -38,6 +108,52 @@ export function Cheats() {
           </button>
         ))}
       </div>
+
+      {/* How to Enter Cheats — collapsible */}
+      {howTo && (
+        <div className="border border-primary/20 bg-primary/5 rounded-xl overflow-hidden">
+          <button
+            onClick={() => setShowHowTo(!showHowTo)}
+            className="w-full flex items-center justify-between px-5 py-4 text-left"
+          >
+            <div>
+              <span className="text-xs font-mono text-primary uppercase tracking-widest">How to Enter Cheats</span>
+              <p className="text-sm font-semibold mt-0.5">Platform instructions & important notes for {game.game}</p>
+            </div>
+            {showHowTo ? <ChevronUp className="w-4 h-4 text-muted-foreground shrink-0" /> : <ChevronDown className="w-4 h-4 text-muted-foreground shrink-0" />}
+          </button>
+
+          {showHowTo && (
+            <div className="px-5 pb-5 border-t border-primary/10 space-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mt-4">
+                {[
+                  { label: "PlayStation", icon: <Gamepad2 className="w-3.5 h-3.5" />, text: howTo.ps },
+                  { label: "Xbox", icon: <Gamepad2 className="w-3.5 h-3.5" />, text: howTo.xbox },
+                  { label: "PC", icon: <Monitor className="w-3.5 h-3.5" />, text: howTo.pc },
+                  ...(howTo.phone ? [{ label: "Phone (GTA V)", icon: <Smartphone className="w-3.5 h-3.5" />, text: howTo.phone }] : []),
+                ].map(({ label, icon, text }) => (
+                  <div key={label} className="bg-background/50 rounded-lg p-3">
+                    <div className="flex items-center gap-1.5 text-xs font-mono text-muted-foreground uppercase tracking-wider mb-2">{icon} {label}</div>
+                    <p className="text-xs text-foreground leading-relaxed">{text}</p>
+                  </div>
+                ))}
+              </div>
+              {howTo.notes && (
+                <div className="space-y-1.5">
+                  <div className="text-xs font-mono text-primary uppercase tracking-widest">Important Notes & Best Combos</div>
+                  <ul className="space-y-1.5">
+                    {howTo.notes.map((note, i) => (
+                      <li key={i} className="flex items-start gap-2 text-xs text-muted-foreground">
+                        <span className="text-primary shrink-0 mt-0.5">→</span> {note}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+      )}
 
       {/* Filters */}
       <div className="flex flex-col sm:flex-row gap-3">
@@ -80,6 +196,25 @@ export function Cheats() {
             <p className="text-sm">No cheats found. Try a different search or category.</p>
           </div>
         )}
+      </div>
+
+      {/* SEO Content */}
+      <div className="bg-card border border-border rounded-xl p-6 space-y-4">
+        <h2 className="font-headline text-2xl">About GTA Cheat Codes</h2>
+        <div className="grid md:grid-cols-3 gap-4 text-sm text-muted-foreground leading-relaxed">
+          <div>
+            <h3 className="font-semibold text-foreground mb-1">GTA 5 Cheats</h3>
+            <p>GTA V has 26 cheat codes usable in story mode. They cover player boosts, vehicles, weapons, and world effects. Cheats are entered via button sequences, PC console commands, or phone numbers. They do NOT work in GTA Online.</p>
+          </div>
+          <div>
+            <h3 className="font-semibold text-foreground mb-1">GTA San Andreas Cheats</h3>
+            <p>San Andreas has 90+ cheats covering CJ's stats, vehicles, weapons, gang behavior, and weather. They're the most varied of any GTA title. Most don't disable achievements on the original console versions.</p>
+          </div>
+          <div>
+            <h3 className="font-semibold text-foreground mb-1">GTA Vice City Cheats</h3>
+            <p>Vice City has 88 cheats split across player, vehicle, combat, and world effects. Tommy Vercetti can be made nearly invincible with the right combination of health, armor, and wanted-level cheats.</p>
+          </div>
+        </div>
       </div>
     </div>
   );

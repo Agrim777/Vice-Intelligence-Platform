@@ -1,9 +1,11 @@
+import { useEffect } from "react";
 import { Link } from "wouter";
-import { ArrowRight, BookOpen, Gamepad2, Star, ChevronRight, Flame, Clock, Newspaper, Map, ShoppingBag, Car, ExternalLink } from "lucide-react";
+import { ArrowRight, BookOpen, Gamepad2, Star, ChevronRight, Flame, Clock, Newspaper, Map, ShoppingBag, Car, ExternalLink, TrendingUp, Eye, HelpCircle } from "lucide-react";
 import { GTA_GAMES } from "@/data/games";
 import { NEWS, TICKER_ITEMS } from "@/data/news";
 import { GUIDES } from "@/data/guides";
 import { AFFILIATE_PRODUCTS } from "@/data/affiliate";
+import { setPageMeta } from "@/lib/seo";
 
 const tagStyles: Record<string, string> = {
   confirmed: "badge-confirmed",
@@ -22,11 +24,55 @@ const tagLabels: Record<string, string> = {
   history: "HISTORY",
 };
 
+const GTA6_FAQ = [
+  {
+    q: "When is GTA 6 coming out?",
+    a: "GTA 6 releases Fall 2025 for PlayStation 5 and Xbox Series X|S. Rockstar Games officially confirmed this date in April 2025. A PC version is expected 6–12 months after the console launch.",
+  },
+  {
+    q: "What platforms will GTA 6 be on?",
+    a: "GTA 6 launches on PS5 and Xbox Series X|S. There is no current-gen (PS4/Xbox One) version. The PC version will follow at a later date — Rockstar confirmed it will support full ray tracing and DLSS 4.",
+  },
+  {
+    q: "How much does GTA 6 cost?",
+    a: "GTA 6 is priced at $79.99 for the Standard Edition and $99.99 for the Premium Edition. The Premium Edition includes 3 days early access, exclusive in-game content, and $1M GTA Online starting cash.",
+  },
+  {
+    q: "Who are the characters in GTA 6?",
+    a: "GTA 6 features two playable protagonists: Lucia (a female criminal and the first female lead in mainline GTA history) and Jason (her male co-protagonist). You can switch between them freely throughout the open world.",
+  },
+  {
+    q: "Where is GTA 6 set?",
+    a: "GTA 6 is set in a reimagined Vice City (inspired by Miami, Florida) and the surrounding Leonida state — which includes Everglades swampland, rural farmland, offshore keys, and the sprawling Vice City urban area.",
+  },
+  {
+    q: "Will GTA 6 have GTA Online?",
+    a: "Yes — GTA Online 6 launches on day one with the base game. Rockstar says it's been built from the ground up, not ported from GTA V. It will be free for all GTA 6 owners.",
+  },
+  {
+    q: "Is GTA 6 coming to PC?",
+    a: "Yes, but not at launch. Rockstar confirmed the PC version will follow consoles by at least 6 months. It will support ray tracing, DLSS 4, and high-resolution textures optimized for modern PC hardware.",
+  },
+  {
+    q: "What are the new GTA 6 gameplay features?",
+    a: "Confirmed features include: dual protagonists, dynamic hurricane weather, wildlife ecosystem (alligators, fish, birds), prone cover system, modular weapon customization, property purchasing, stock market, and an in-game social media system.",
+  },
+];
+
 export function Home() {
+  useEffect(() => {
+    setPageMeta({
+      title: "GTA Cheat Codes, Guides & GTA 6 News — The #1 GTA Resource",
+      description: "GTA6Guide.in — all GTA cheat codes (GTA 6, GTA 5, San Andreas, Vice City, GTA 4, GTA 3), mission guides, vehicle database, maps, and GTA 6 news. Updated 2025.",
+      path: "/",
+    });
+  }, []);
+
   const hotNews = NEWS.filter((n) => n.hot).slice(0, 3);
   const latestNews = NEWS.slice(0, 8);
   const featuredGuides = GUIDES.slice(0, 6);
   const featuredGear = AFFILIATE_PRODUCTS.slice(0, 3);
+  const trendingNews = [...NEWS].sort((a, b) => (b.views ?? 0) - (a.views ?? 0)).slice(0, 6);
 
   return (
     <div className="min-h-screen">
@@ -41,7 +87,7 @@ export function Home() {
               GTA 6 — Fall 2025 · The Wait Is Almost Over
             </div>
             <h1 className="font-headline text-6xl md:text-8xl leading-none text-foreground">
-              VICE<span className="gradient-text-vice"> INTELLIGENCE</span>
+              GTA6<span className="gradient-text-vice"> GUIDE</span>
             </h1>
             <p className="text-lg md:text-xl text-muted-foreground leading-relaxed max-w-2xl">
               The #1 GTA resource — cheat codes, mission guides, vehicle database, maps, and GTA 6 news
@@ -74,8 +120,8 @@ export function Home() {
             <div className="flex flex-wrap gap-5 mt-2">
               {[
                 { value: "12", label: "GTA Games Covered" },
-                { value: "80+", label: "Cheat Codes" },
-                { value: "30", label: "Mission Guides" },
+                { value: "89+", label: "Cheat Codes" },
+                { value: "41", label: "Mission Guides" },
                 { value: "30+", label: "Vehicles Ranked" },
               ].map(({ value, label }) => (
                 <div key={label} className="text-center">
@@ -143,7 +189,7 @@ export function Home() {
                   { label: "Setting", value: "Vice City (Miami)" },
                   { label: "Platform", value: "PS5 / Xbox Series X|S" },
                   { label: "Protagonists", value: "Lucia & Jason" },
-                  { label: "GTA Online", value: "Day One Launch" },
+                  { label: "Price", value: "$79.99 / $99.99 Premium" },
                 ].map(({ label, value }) => (
                   <div key={label} className="bg-background/50 rounded-lg p-3">
                     <div className="text-xs text-muted-foreground">{label}</div>
@@ -167,7 +213,7 @@ export function Home() {
           </div>
         </section>
 
-        {/* GTA 6 News */}
+        {/* GTA 6 Hot News */}
         <section>
           <div className="flex items-center justify-between mb-6">
             <h2 className="font-headline text-3xl md:text-4xl">LATEST GTA NEWS</h2>
@@ -188,6 +234,38 @@ export function Home() {
                     <h3 className="font-display font-semibold text-sm leading-snug group-hover:text-primary transition-colors">{item.title}</h3>
                     <p className="text-xs text-muted-foreground leading-relaxed flex-1">{item.summary}</p>
                     <div className="flex items-center gap-2 text-xs text-muted-foreground"><Clock className="w-3 h-3" />{item.date} · {item.source}</div>
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </section>
+
+        {/* Trending Now — Most Read */}
+        <section>
+          <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center gap-2">
+              <TrendingUp className="w-5 h-5 text-primary" />
+              <h2 className="font-headline text-3xl md:text-4xl">TRENDING NOW</h2>
+            </div>
+            <Link href="/news">
+              <div className="text-sm text-primary hover:text-primary/80 flex items-center gap-1 cursor-pointer">All articles <ChevronRight className="w-4 h-4" /></div>
+            </Link>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+            {trendingNews.map((item, i) => (
+              <Link key={item.id} href="/news">
+                <div className="group flex items-start gap-4 p-4 border border-border bg-card rounded-md hover:border-primary/30 hover-lift transition-all cursor-pointer">
+                  <span className="font-headline text-3xl text-primary/25 leading-none shrink-0 w-8 text-center">{i + 1}</span>
+                  <div className="flex-1 min-w-0 space-y-1">
+                    <div className="flex items-center gap-2 flex-wrap">
+                      <span className={`text-[9px] font-bold uppercase tracking-widest px-1.5 py-0.5 rounded border ${tagStyles[item.tag]}`}>{tagLabels[item.tag]}</span>
+                    </div>
+                    <h3 className="font-display font-semibold text-sm leading-snug group-hover:text-primary transition-colors">{item.title}</h3>
+                    <div className="flex items-center gap-3 text-[10px] text-muted-foreground">
+                      <span className="flex items-center gap-1"><Eye className="w-2.5 h-2.5" /> {(item.views ?? 0).toLocaleString()} views</span>
+                      <span className="flex items-center gap-1"><Clock className="w-2.5 h-2.5" /> {item.date}</span>
+                    </div>
                   </div>
                 </div>
               </Link>
@@ -335,21 +413,51 @@ export function Home() {
           </div>
         </section>
 
+        {/* GTA 6 FAQ */}
+        <section>
+          <div className="flex items-center gap-3 mb-6">
+            <HelpCircle className="w-6 h-6 text-primary" />
+            <h2 className="font-headline text-3xl md:text-4xl">GTA 6 FAQ</h2>
+          </div>
+          <div className="space-y-2">
+            {GTA6_FAQ.map((faq, i) => (
+              <details key={i} className="group border border-border bg-card rounded-md overflow-hidden hover:border-primary/25 transition-colors">
+                <summary className="flex items-center justify-between gap-4 p-5 cursor-pointer list-none hover:bg-secondary/30 transition-colors">
+                  <h3 className="font-display font-semibold text-sm">{faq.q}</h3>
+                  <ChevronRight className="w-4 h-4 text-muted-foreground shrink-0 group-open:rotate-90 transition-transform" />
+                </summary>
+                <div className="px-5 pb-5 pt-0">
+                  <p className="text-sm text-muted-foreground leading-relaxed">{faq.a}</p>
+                </div>
+              </details>
+            ))}
+          </div>
+          <div className="mt-4 p-4 bg-card border border-border rounded-md">
+            <p className="text-xs text-muted-foreground">
+              <strong className="text-foreground">Have more questions about GTA 6?</strong> Browse our{" "}
+              <Link href="/news"><span className="text-primary hover:underline cursor-pointer">GTA 6 News Hub</span></Link>{" "}
+              for the latest confirmed details, or check our{" "}
+              <Link href="/guides"><span className="text-primary hover:underline cursor-pointer">Guide Library</span></Link>{" "}
+              for everything we know about gameplay.
+            </p>
+          </div>
+        </section>
+
         {/* SEO Content Block */}
         <section className="bg-card border border-border rounded-xl p-8">
-          <h2 className="font-headline text-3xl mb-4">About Vice Intelligence — Your GTA Resource</h2>
+          <h2 className="font-headline text-3xl mb-4">About GTA6Guide.in — Your GTA Resource</h2>
           <div className="grid md:grid-cols-3 gap-6 text-sm text-muted-foreground leading-relaxed">
             <div>
               <h3 className="font-semibold text-foreground mb-2">Complete Cheat Code Database</h3>
-              <p>Every GTA cheat code across all platforms — PlayStation button combos, Xbox controller codes, PC keyboard cheats, and GTA IV/V phone numbers. Covering GTA V, San Andreas, Vice City, GTA IV, and GTA III.</p>
+              <p>Every GTA cheat code across all platforms — PlayStation button combos, Xbox controller codes, PC keyboard cheats, and GTA IV/V phone numbers. Covering GTA V, San Andreas, Vice City, GTA IV, and GTA III. Platform-specific entry instructions included.</p>
             </div>
             <div>
               <h3 className="font-semibold text-foreground mb-2">Mission Guides & Walkthroughs</h3>
-              <p>Step-by-step mission guides, money-making strategies, and 100% completion checklists. From GTA III's taxi sub-missions to GTA Online's Cayo Perico Heist — every game covered in depth.</p>
+              <p>Step-by-step mission guides, money-making strategies, vehicle deep-dives, and 100% completion checklists. From GTA III's taxi sub-missions to GTA Online's Cayo Perico Heist — every game covered in depth with 41+ guides.</p>
             </div>
             <div>
               <h3 className="font-semibold text-foreground mb-2">GTA 6 News Hub</h3>
-              <p>Up-to-date GTA 6 coverage — confirmed details from Rockstar, official trailer breakdowns, verified leaks, and community analysis. Fall 2025 release for PS5 and Xbox Series X|S.</p>
+              <p>Up-to-date GTA 6 coverage — confirmed details from Rockstar, official trailer breakdowns, verified leaks, and community analysis. Fall 2025 release for PS5 and Xbox Series X|S. Pricing, characters, map details, and gameplay features all covered.</p>
             </div>
           </div>
         </section>

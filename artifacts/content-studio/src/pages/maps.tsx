@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { MapPin, Info, ChevronDown, ChevronUp, ExternalLink } from "lucide-react";
+import { setPageMeta } from "@/lib/seo";
 
 interface MapGame {
   id: string;
@@ -228,6 +229,14 @@ const MAP_GAMES: MapGame[] = [
 
 export function Maps() {
   const [expanded, setExpanded] = useState<string | null>("gta5");
+
+  useEffect(() => {
+    setPageMeta({
+      title: "GTA Maps — All Games from GTA 1 to GTA 6 (Key Areas, Secrets & Easter Eggs)",
+      description: "Complete GTA map breakdowns for every game — GTA 1, GTA 3, Vice City, San Andreas, GTA 4, GTA 5, and GTA 6. Key districts, hidden secrets, best spots, and real-world inspirations.",
+      path: "/maps",
+    });
+  }, []);
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-10">

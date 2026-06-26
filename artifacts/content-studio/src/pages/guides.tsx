@@ -1,12 +1,21 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Search, Clock, ChevronRight } from "lucide-react";
 import { GUIDES, GUIDE_CATEGORIES, GUIDE_GAMES } from "@/data/guides";
+import { setPageMeta } from "@/lib/seo";
 
 export function Guides() {
   const [category, setCategory] = useState("All");
   const [game, setGame] = useState("All Games");
   const [search, setSearch] = useState("");
   const [expanded, setExpanded] = useState<string | null>(null);
+
+  useEffect(() => {
+    setPageMeta({
+      title: "GTA Guides & Walkthroughs — Money, Missions, Vehicles & More",
+      description: "In-depth GTA guides for every game: money methods, mission walkthroughs, vehicle rankings, cheat tips, and 100% completion guides for GTA 5, San Andreas, Vice City, GTA 4, GTA 3, and GTA 6.",
+      path: "/guides",
+    });
+  }, []);
 
   const filtered = GUIDES.filter((g) => {
     const matchCat = category === "All" || g.category === category;
@@ -19,7 +28,7 @@ export function Guides() {
     <div className="max-w-7xl mx-auto px-6 py-10 space-y-8">
       <div>
         <h1 className="font-headline text-5xl md:text-6xl">GUIDE LIBRARY</h1>
-        <p className="text-muted-foreground mt-2">In-depth guides for every GTA game — money methods, missions, secrets, completion, and more.</p>
+        <p className="text-muted-foreground mt-2">In-depth guides for every GTA game — money methods, missions, vehicle rankings, collectibles, and more. {GUIDES.length} guides total.</p>
       </div>
 
       {/* Filters */}
@@ -101,7 +110,7 @@ export function Guides() {
               {isOpen && (
                 <div className="px-5 pb-5 border-t border-border">
                   <div className="pt-4 space-y-2">
-                    <div className="text-xs font-mono uppercase tracking-widest text-primary mb-3">Pro Tips</div>
+                    <div className="text-xs font-mono uppercase tracking-widest text-primary mb-3">Step-by-Step Tips</div>
                     <ul className="space-y-2">
                       {guide.tips.map((tip, i) => (
                         <li key={i} className="flex items-start gap-3 text-sm text-muted-foreground">

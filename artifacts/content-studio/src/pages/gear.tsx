@@ -1,9 +1,18 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ExternalLink, Star, ShoppingCart, Shield, Zap, Award } from "lucide-react";
 import { AFFILIATE_PRODUCTS, GEAR_CATEGORIES } from "@/data/affiliate";
+import { setPageMeta } from "@/lib/seo";
 
 export function Gear() {
   const [activeCategory, setActiveCategory] = useState("All");
+
+  useEffect(() => {
+    setPageMeta({
+      title: "Best GTA Gaming Gear & Accessories — Controllers, Headsets & More",
+      description: "Top gaming gear for GTA players — PS5 DualSense controllers, gaming headsets, capture cards, and chairs. Hand-picked for GTA 5, GTA Online, and GTA 6 gaming sessions.",
+      path: "/gear",
+    });
+  }, []);
 
   const filtered = activeCategory === "All"
     ? AFFILIATE_PRODUCTS

@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Search } from "lucide-react";
 import { WEAPONS, WEAPON_CLASSES, WEAPON_GAMES } from "@/data/weapons";
+import { setPageMeta } from "@/lib/seo";
 
 function StatBar({ value, color = "bg-primary" }: { value: number; color?: string }) {
   return (
@@ -17,6 +18,14 @@ export function Weapons() {
   const [weaponClass, setWeaponClass] = useState("All");
   const [game, setGame] = useState("All Games");
   const [search, setSearch] = useState("");
+
+  useEffect(() => {
+    setPageMeta({
+      title: "GTA Weapons Database — Stats, Locations & Best Weapons Per Game",
+      description: "Full GTA weapons database with damage, range, and fire rate stats. Best weapons for every GTA game — GTA 5, GTA Online, San Andreas, Vice City, GTA 4, and GTA 3. Locations included.",
+      path: "/weapons",
+    });
+  }, []);
 
   const filtered = WEAPONS.filter((w) => {
     const matchClass = weaponClass === "All" || w.class === weaponClass;

@@ -1,10 +1,20 @@
+import { useEffect } from "react";
 import { Link } from "wouter";
 import { Star, Gamepad2, ChevronRight } from "lucide-react";
 import { GTA_GAMES, TIMELINE_EVENTS } from "@/data/games";
+import { setPageMeta } from "@/lib/seo";
 
 export function Games() {
   const released = GTA_GAMES.filter((g) => g.status === "released");
   const upcoming = GTA_GAMES.filter((g) => g.status === "pre-release");
+
+  useEffect(() => {
+    setPageMeta({
+      title: "All GTA Games — Complete Grand Theft Auto Franchise History (1997–2025)",
+      description: "Every mainline Grand Theft Auto game from GTA 1 (1997) to GTA 6 (2025). Release dates, platforms, settings, characters, and what makes each entry in the franchise special.",
+      path: "/games",
+    });
+  }, []);
 
   return (
     <div className="max-w-7xl mx-auto px-6 py-10 space-y-16">

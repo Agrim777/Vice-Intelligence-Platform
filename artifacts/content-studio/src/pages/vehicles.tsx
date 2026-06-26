@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Search, Zap, Gauge, RotateCcw } from "lucide-react";
 import { VEHICLES, VEHICLE_CLASSES, VEHICLE_GAMES } from "@/data/vehicles";
+import { setPageMeta } from "@/lib/seo";
 
 function StatBar({ value, max = 10, color = "bg-primary" }: { value: number; max?: number; color?: string }) {
   return (
@@ -18,6 +19,14 @@ export function Vehicles() {
   const [vehicleGame, setVehicleGame] = useState("All Games");
   const [search, setSearch] = useState("");
   const [sortBy, setSortBy] = useState<"topSpeed" | "acceleration" | "handling">("topSpeed");
+
+  useEffect(() => {
+    setPageMeta({
+      title: "GTA Vehicle Database — Top Speeds, Stats & Locations for All GTA Games",
+      description: "Complete GTA vehicle database — top speed, acceleration, handling stats and spawn locations for GTA Online supercars, GTA V vehicles, San Andreas, Vice City, and GTA 4 cars. Updated 2025.",
+      path: "/vehicles",
+    });
+  }, []);
 
   const filtered = VEHICLES
     .filter((v) => {
