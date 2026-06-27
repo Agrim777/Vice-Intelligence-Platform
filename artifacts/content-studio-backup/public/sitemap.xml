@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <!-- Core pages -->
+  <url><loc>https://gta6guide.in/</loc><lastmod>2026-06-27</lastmod><changefreq>daily</changefreq><priority>1.0</priority></url>
+  <url><loc>https://gta6guide.in/news</loc><lastmod>2026-06-27</lastmod><changefreq>daily</changefreq><priority>0.9</priority></url>
+  <url><loc>https://gta6guide.in/guides</loc><lastmod>2026-06-27</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://gta6guide.in/cheats</loc><lastmod>2026-06-27</lastmod><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://gta6guide.in/games</loc><lastmod>2026-06-27</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://gta6guide.in/vehicles</loc><lastmod>2026-06-27</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://gta6guide.in/maps</loc><lastmod>2026-06-27</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://gta6guide.in/weapons</loc><lastmod>2026-06-27</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://gta6guide.in/gear</loc><lastmod>2026-06-27</lastmod><changefreq>weekly</changefreq><priority>0.6</priority></url>
+
+  <!-- GTA 6 dedicated SEO pages — HIGH PRIORITY -->
+  <url><loc>https://gta6guide.in/gta6/release-date</loc><lastmod>2026-06-27</lastmod><changefreq>daily</changefreq><priority>1.0</priority></url>
+  <url><loc>https://gta6guide.in/gta6/editions</loc><lastmod>2026-06-27</lastmod><changefreq>weekly</changefreq><priority>1.0</priority></url>
+  <url><loc>https://gta6guide.in/gta6/pre-order</loc><lastmod>2026-06-27</lastmod><changefreq>weekly</changefreq><priority>1.0</priority></url>
+  <url><loc>https://gta6guide.in/gta6/price</loc><lastmod>2026-06-27</lastmod><changefreq>weekly</changefreq><priority>0.95</priority></url>
+  <url><loc>https://gta6guide.in/gta6/online</loc><lastmod>2026-06-27</lastmod><changefreq>weekly</changefreq><priority>0.95</priority></url>
+  <url><loc>https://gta6guide.in/gta6/map-size</loc><lastmod>2026-06-27</lastmod><changefreq>weekly</changefreq><priority>0.95</priority></url>
+  <url><loc>https://gta6guide.in/gta6/story</loc><lastmod>2026-06-27</lastmod><changefreq>weekly</changefreq><priority>0.95</priority></url>
+  <url><loc>https://gta6guide.in/gta6/easter-eggs</loc><lastmod>2026-06-27</lastmod><changefreq>weekly</changefreq><priority>0.90</priority></url>
+  <url><loc>https://gta6guide.in/gta6/download-size</loc><lastmod>2026-06-27</lastmod><changefreq>weekly</changefreq><priority>0.90</priority></url>
+  <url><loc>https://gta6guide.in/gta6/characters</loc><lastmod>2026-06-27</lastmod><changefreq>weekly</changefreq><priority>0.95</priority></url>
+  <url><loc>https://gta6guide.in/gta6/map</loc><lastmod>2026-06-27</lastmod><changefreq>weekly</changefreq><priority>0.95</priority></url>
+  <url><loc>https://gta6guide.in/gta6/platforms</loc><lastmod>2026-06-27</lastmod><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://gta6guide.in/gta6/gameplay</loc><lastmod>2026-06-27</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://gta6guide.in/gta6/system-requirements</loc><lastmod>2026-06-27</lastmod><changefreq>monthly</changefreq><priority>0.85</priority></url>
+  <url><loc>https://gta6guide.in/gta6/trailer</loc><lastmod>2026-06-27</lastmod><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://gta6guide.in/gta6/trailer-music</loc><lastmod>2026-06-27</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+
+  <!-- GTA 6 News Articles (individual SEO pages) -->
+  <url><loc>https://gta6guide.in/news/gta6-preorder-records-2026</loc><lastmod>2026-06-27</lastmod><changefreq>weekly</changefreq><priority>0.95</priority></url>
+  <url><loc>https://gta6guide.in/news/gta6-release-date-november-2026</loc><lastmod>2026-06-27</lastmod><changefreq>weekly</changefreq><priority>0.95</priority></url>
+  <url><loc>https://gta6guide.in/news/gta6-preorder-open-june25</loc><lastmod>2026-06-27</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://gta6guide.in/news/gta6-easter-egg-tommy-lizard</loc><lastmod>2026-06-27</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://gta6guide.in/news/gta6-price-79-single-player</loc><lastmod>2026-06-27</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://gta6guide.in/news/gta6-second-delay-march-2026</loc><lastmod>2026-06-27</lastmod><changefreq>monthly</changefreq><priority>0.85</priority></url>
+  <url><loc>https://gta6guide.in/news/gta6-online-separate-launch</loc><lastmod>2026-06-27</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://gta6guide.in/news/gta6-trailer2-official</loc><lastmod>2026-06-27</lastmod><changefreq>monthly</changefreq><priority>0.85</priority></url>
+  <url><loc>https://gta6guide.in/news/gta6-vintage-vice-city-pack</loc><lastmod>2026-06-27</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://gta6guide.in/news/gta6-pc-confirmed</loc><lastmod>2026-06-27</lastmod><changefreq>monthly</changefreq><priority>0.85</priority></url>
+  <url><loc>https://gta6guide.in/news/gta6-lucia-first-female</loc><lastmod>2026-06-27</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://gta6guide.in/news/gta6-map-leonida</loc><lastmod>2026-06-27</lastmod><changefreq>monthly</changefreq><priority>0.85</priority></url>
+  <url><loc>https://gta6guide.in/news/gta6-hurricane-system</loc><lastmod>2026-06-27</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://gta6guide.in/news/gta6-economy-property</loc><lastmod>2026-06-27</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://gta6guide.in/news/gta6-wildlife</loc><lastmod>2026-06-27</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://gta6guide.in/news/gta6-weapons-combat</loc><lastmod>2026-06-27</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+
+  <!-- GTA 5 dedicated SEO pages -->
+  <url><loc>https://gta6guide.in/gta5/money-cheat</loc><lastmod>2026-06-27</lastmod><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://gta6guide.in/gta5/best-cars</loc><lastmod>2026-06-27</lastmod><changefreq>monthly</changefreq><priority>0.85</priority></url>
+  <url><loc>https://gta6guide.in/gta5/online-money</loc><lastmod>2026-06-27</lastmod><changefreq>monthly</changefreq><priority>0.85</priority></url>
+  <url><loc>https://gta6guide.in/gta5/system-requirements</loc><lastmod>2026-06-27</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+
+  <!-- Misc SEO pages -->
+  <url><loc>https://gta6guide.in/gta-games-in-order</loc><lastmod>2026-06-27</lastmod><changefreq>monthly</changefreq><priority>0.85</priority></url>
+</urlset>

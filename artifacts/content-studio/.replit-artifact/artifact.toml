@@ -1,6 +1,6 @@
 kind = "web"
 previewPath = "/"
-title = "GTA 6 Content Studio"
+title = "Vice Intelligence Platform"
 version = "1.0.0"
 id = "artifacts/content-studio"
 router = "path"

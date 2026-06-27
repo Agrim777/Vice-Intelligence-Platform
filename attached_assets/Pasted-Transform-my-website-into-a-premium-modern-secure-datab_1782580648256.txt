@@ -1,0 +1,661 @@
+Transform my website into a premium, modern, secure, database-driven GTA gaming portal comparable to the highest-quality gaming guide websites. The finished product should function like a professional gaming CMS, where I can manage every aspect of the website from a hidden admin panel without touching the source code.
+
+Core Requirements
+Do NOT remove any existing articles or pages.
+Preserve existing URLs whenever possible.
+Improve the existing UI while keeping it lightweight, responsive and modern.
+Write clean, maintainable and scalable code.
+Use a proper database for all dynamic content.
+Build the website for long-term growth.
+Follow Google’s latest SEO, Core Web Vitals, Accessibility and Security best practices.
+Target Lighthouse scores above 95 in Performance, SEO, Accessibility and Best Practices.
+Dynamic CMS
+The website must become a completely dynamic CMS.
+
+Every article, page, category, image and setting should be stored in a database instead of being hardcoded.
+
+After publishing an article from the admin dashboard, it should automatically appear everywhere on the public website without editing any code.
+
+Publishing an article should automatically:
+
+Show it on Homepage
+Show in Latest Articles
+Show in Related Articles
+Show in Category pages
+Show in Tag pages
+Show in Search
+Show in XML Sitemap
+Show in RSS Feed
+Generate SEO metadata
+Generate structured data
+Generate breadcrumbs
+Generate clean URL slug
+Editing an article should immediately update the public version.
+
+Deleting an article should automatically remove it from every location.
+
+Draft articles must never appear publicly.
+
+Scheduled articles should automatically publish on the selected date and time.
+
+The CMS should support unlimited:
+
+Articles
+Categories
+Tags
+Images
+Authors
+Pages
+without modifying code.
+
+Hidden Secure Admin Panel
+Create a completely hidden Admin CMS.
+
+Requirements:
+
+Hidden login URL (for example /secure-admin-portal)
+Never link this page anywhere
+Never include it in navigation
+Never include it in sitemap
+Never expose it publicly
+Search engines should never discover it
+Authentication:
+
+Secure hashed passwords
+HTTPS-only cookies
+Secure sessions
+Session timeout
+Rate limiting
+Account lockout after repeated failed attempts
+CSRF protection
+XSS protection
+SQL Injection protection
+Audit log
+Activity log
+Only one administrator account should exist unless manually created later.
+
+Admin Dashboard
+The admin dashboard should allow me to manage the entire website.
+
+Article Management
+Create article
+
+Edit article
+
+Delete article
+
+Publish
+
+Save Draft
+
+Schedule publishing
+
+Preview article
+
+Duplicate article
+
+Archive article
+
+Restore article
+
+Revision history
+
+Autosave
+
+Rich Text Editor
+Modern WYSIWYG editor supporting:
+
+Headings
+
+Bold
+
+Italic
+
+Underline
+
+Lists
+
+Tables
+
+Quotes
+
+Code blocks
+
+Internal links
+
+External links
+
+Buttons
+
+YouTube embeds
+
+Image alignment
+
+Image captions
+
+Pull quotes
+
+Automatic Table of Contents
+
+Responsive HTML output
+
+Image Manager
+Drag and drop upload
+
+Multiple upload
+
+Featured image
+
+Gallery
+
+Automatic compression
+
+Automatic WebP conversion
+
+Automatic resizing
+
+Automatic alt text generation
+
+Image captions
+
+Media Library
+
+Reuse existing images
+
+Delete unused images
+
+SEO Editor
+Each article should have:
+
+SEO Title
+
+Meta Description
+
+Focus Keyword
+
+Canonical URL
+
+Custom URL Slug
+
+Open Graph image
+
+Twitter Card image
+
+Index / Noindex
+
+Follow / Nofollow
+
+Article Schema
+
+FAQ Schema
+
+Breadcrumb Schema
+
+Automatic structured data validation
+
+SEO score
+
+Keyword suggestions
+
+Duplicate content detection
+
+Broken link detection
+
+Readability score
+
+Categories
+Create
+
+Edit
+
+Delete
+
+Nested categories
+
+Unlimited categories
+
+Tags
+Create
+
+Edit
+
+Delete
+
+Unlimited tags
+
+Homepage Manager
+Allow me to manage:
+
+Hero section
+
+Featured guides
+
+Trending news
+
+Recently updated
+
+Latest articles
+
+Popular articles
+
+Editor’s picks
+
+Categories
+
+Homepage order
+
+Everything should be editable without touching code.
+
+Search
+Fast website search.
+
+Search by:
+
+Title
+
+Keyword
+
+Category
+
+Tag
+
+Author
+
+Draft
+
+Published
+
+Scheduled
+
+Media Library
+Central media manager.
+
+Search images.
+
+Delete images.
+
+Replace images.
+
+Reuse uploaded images.
+
+Backup
+One-click backup.
+
+Restore backup.
+
+Download backup.
+
+Cache
+Automatically clear cache after publishing.
+
+Automatically regenerate sitemap.
+
+Automatically regenerate RSS feed.
+
+Automatically rebuild search index.
+
+Public Website Features
+Sticky Table of Contents
+
+Dark Mode
+
+Light Mode
+
+Reading progress bar
+
+Copy cheat code button
+
+Search bar
+
+Back to top button
+
+Related articles
+
+Latest articles
+
+Trending articles
+
+Popular articles
+
+Estimated reading time
+
+Last Updated
+
+Author section
+
+Breadcrumbs
+
+Comments system (optional with moderation)
+
+Responsive design
+
+Fast loading
+
+Smooth animations
+
+SEO
+Generate unique titles
+
+Generate meta descriptions
+
+Canonical URLs
+
+Open Graph tags
+
+Twitter Cards
+
+Robots.txt
+
+Dynamic XML Sitemap
+
+Breadcrumb Schema
+
+FAQ Schema
+
+Article Schema
+
+Organization Schema
+
+Website Schema
+
+SearchAction Schema
+
+Proper H1-H6 hierarchy
+
+SEO-friendly URLs
+
+Automatic image alt text
+
+Automatic internal linking
+
+Related articles
+
+Topic clusters
+
+No duplicate metadata
+
+Automatic structured data
+
+Internal Linking
+Automatically suggest related articles.
+
+Automatically link GTA games together.
+
+Create topic clusters for:
+
+GTA III
+
+Vice City
+
+Vice City Stories
+
+Liberty City Stories
+
+San Andreas
+
+GTA IV
+
+Episodes from Liberty City
+
+Chinatown Wars
+
+GTA V
+
+GTA Online
+
+GTA VI
+
+Every article should naturally connect with related articles.
+
+Homepage
+Hero Search
+
+Featured Guides
+
+Trending Guides
+
+Latest Guides
+
+Popular Guides
+
+Recently Updated
+
+Browse by Game
+
+Browse by Category
+
+Latest GTA News
+
+Content Sections
+Every guide should support:
+
+FAQs
+
+Tips & Tricks
+
+Common Mistakes
+
+Version Compatibility
+
+Screenshots
+
+Image Galleries
+
+Comparison Tables
+
+YouTube videos
+
+Related Guides
+
+Downloads (if applicable)
+
+Performance
+Lazy loading
+
+Image optimization
+
+Automatic WebP
+
+CSS minification
+
+JS minification
+
+Font optimization
+
+Caching
+
+Reduce CLS
+
+Improve LCP
+
+Improve INP
+
+Fast loading
+
+Google AdSense Compatibility
+Prepare the website for Google AdSense approval.
+
+Create professional pages:
+
+About Us
+
+Contact Us
+
+Privacy Policy
+
+Terms & Conditions
+
+Disclaimer
+
+Cookie Policy
+
+Editorial Policy
+
+DMCA Policy
+
+Affiliate Disclosure (if affiliate links are used)
+
+Contact page should include:
+
+Working contact form
+
+Email
+
+Social links
+
+Footer should include links to every legal page.
+
+Ensure:
+
+Original content
+
+Good navigation
+
+No broken links
+
+Fast loading
+
+Responsive layout
+
+Proper HTML structure
+
+No policy violations
+
+Clean user experience
+
+Google Search Compatibility
+Ensure maximum compatibility with Google Search.
+
+Automatically generate:
+
+XML Sitemap
+
+RSS Feed
+
+Structured Data
+
+Canonical URLs
+
+Breadcrumbs
+
+SEO metadata
+
+Image metadata
+
+Article schema
+
+FAQ schema
+
+Organization schema
+
+Website schema
+
+SearchAction schema
+
+Security
+HTTPS
+
+Secure authentication
+
+Rate limiting
+
+CSRF
+
+XSS
+
+SQL Injection prevention
+
+Input validation
+
+Output escaping
+
+Secure cookies
+
+Session management
+
+Password hashing
+
+Audit logs
+
+Accessibility
+Keyboard navigation
+
+ARIA labels
+
+High contrast
+
+Screen reader compatibility
+
+Responsive typography
+
+Accessible forms
+
+WCAG best practices
+
+Extra Features
+404 page
+
+Search on 404 page
+
+Newsletter signup
+
+Social sharing
+
+Related articles
+
+Popular posts
+
+Author pages
+
+Tag pages
+
+Category pages
+
+Archive pages
+
+RSS Feed
+
+Breadcrumbs
+
+Reading progress
+
+Copy cheat buttons
+
+Estimated reading time
+
+Publish date
+
+Last updated date
+
+Featured image
+
+Author bio
+
+Image lazy loading
+
+Automatic sitemap regeneration
+
+Automatic cache clearing
+
+Automatic SEO validation
+
+Automatic internal linking
+
+Automatic alt text generation
+
+Automatic slug generation
+
+Automatic Open Graph generation
+
+Automatic Twitter Card generation
+
+Automatic breadcrumbs
+
+Automatic schema generation
+
+Final Goal
+The final website should function like a professional gaming platform similar to WordPress-based news portals, but custom-built, extremely fast, secure, scalable and easy to manage.
+
+I should be able to log into the hidden admin panel, create a new article with images, SEO settings, categories and tags, click Publish, and the article should instantly appear across the public website (homepage, search, categories, related articles, sitemap and RSS feed) without editing any code.
+
+The website should be optimized for long-term organic traffic, Google Search, Google AdSense approval, Core Web Vitals, scalability and security, while maintaining a premium user experience on desktop and mobile devices.

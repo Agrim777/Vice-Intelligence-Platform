@@ -1,18 +1,32 @@
 openapi: 3.1.0
 info:
+  # Do not change the title, if the title changes, the import paths will be broken
   title: Api
-  version: 0.1.0
-  description: GTA 6 Content Studio API
+  version: 0.2.0
+  description: Vice Intelligence Platform — GTA Gaming CMS API
 servers:
   - url: /api
     description: Base API path
 tags:
   - name: health
     description: Health operations
-  - name: articles
-    description: Article generation and management
-  - name: github
-    description: GitHub publishing operations
+  - name: public
+    description: Public website endpoints
+  - name: admin
+    description: Admin authentication
+  - name: cms-articles
+    description: CMS article management
+  - name: cms-categories
+    description: CMS category management
+  - name: cms-tags
+    description: CMS tag management
+  - name: cms-media
+    description: CMS media management
+  - name: cms-settings
+    description: CMS settings management
+  - name: cms-homepage
+    description: CMS homepage configuration
+
 paths:
   /healthz:
     get:
@@ -27,215 +41,1027 @@ paths:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
 
-  /articles:
+  # ─── PUBLIC ROUTES ───────────────────────────────────────────────────────────
+
+  /public/articles:
     get:
-      operationId: listArticles
-      tags: [articles]
-      summary: List all generated articles
+      operationId: listPublicArticles
+      tags: [public]
+      summary: List published articles
+      parameters:
+        - { name: page, in: query, schema: { type: integer, default: 1 } }
+        - { name: limit, in: query, schema: { type: integer, default: 20 } }
+        - { name: category, in: query, schema: { type: string } }
+        - { name: tag, in: query, schema: { type: string } }
+        - { name: game, in: query, schema: { type: string } }
+        - { name: featured, in: query, schema: { type: boolean } }
+        - { name: sortBy, in: query, schema: { type: string, enum: [latest, popular, trending, updated] } }
       responses:
         "200":
-          description: List of articles
+          description: Paginated published articles
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ArticleListResponse"
+
+  /public/articles/{slug}:
+    get:
+      operationId: getPublicArticle
+      tags: [public]
+      summary: Get single published article by slug
+      parameters:
+        - { name: slug, in: path, required: true, schema: { type: string } }
+      responses:
+        "200":
+          description: Article with related articles
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ArticleDetail"
+        "404":
+          description: Not found
+
+  /public/categories:
+    get:
+      operationId: listPublicCategories
+      tags: [public]
+      summary: List all categories
+      responses:
+        "200":
+          description: Categories
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/Article"
+                  $ref: "#/components/schemas/Category"
 
-  /articles/{id}:
+  /public/tags:
     get:
-      operationId: getArticle
-      tags: [articles]
-      summary: Get a single article
+      operationId: listPublicTags
+      tags: [public]
+      summary: List all tags
+      responses:
+        "200":
+          description: Tags
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Tag"
+
+  /public/search:
+    get:
+      operationId: searchArticles
+      tags: [public]
+      summary: Search published articles
       parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: integer
+        - { name: q, in: query, required: true, schema: { type: string } }
+        - { name: page, in: query, schema: { type: integer, default: 1 } }
+        - { name: limit, in: query, schema: { type: integer, default: 20 } }
+      responses:
+        "200":
+          description: Search results
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ArticleListResponse"
+
+  /public/homepage:
+    get:
+      operationId: getHomepageData
+      tags: [public]
+      summary: Get homepage featured content and config
+      responses:
+        "200":
+          description: Homepage data
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HomepageData"
+
+  /public/stats:
+    get:
+      operationId: getPublicStats
+      tags: [public]
+      summary: Get public site statistics (total articles, categories, games)
+      responses:
+        "200":
+          description: Public stats
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PublicStats"
+
+  # ─── ADMIN AUTH ──────────────────────────────────────────────────────────────
+
+  /admin/login:
+    post:
+      operationId: adminLogin
+      tags: [admin]
+      summary: Admin login
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AdminLoginInput"
+      responses:
+        "200":
+          description: Login successful
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AdminSession"
+        "401":
+          description: Invalid credentials
+        "429":
+          description: Too many attempts
+
+  /admin/logout:
+    post:
+      operationId: adminLogout
+      tags: [admin]
+      summary: Admin logout
+      responses:
+        "200":
+          description: Logged out
+
+  /admin/me:
+    get:
+      operationId: getAdminSession
+      tags: [admin]
+      summary: Get current admin session
+      responses:
+        "200":
+          description: Session info
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AdminSession"
+        "401":
+          description: Not authenticated
+
+  # ─── CMS ARTICLES ────────────────────────────────────────────────────────────
+
+  /admin/articles:
+    get:
+      operationId: listAdminArticles
+      tags: [cms-articles]
+      summary: List all articles (admin)
+      parameters:
+        - { name: page, in: query, schema: { type: integer, default: 1 } }
+        - { name: limit, in: query, schema: { type: integer, default: 20 } }
+        - { name: status, in: query, schema: { type: string, enum: [published, draft, scheduled, archived] } }
+        - { name: search, in: query, schema: { type: string } }
+        - { name: category, in: query, schema: { type: string } }
+      responses:
+        "200":
+          description: Articles
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AdminArticleListResponse"
+    post:
+      operationId: createAdminArticle
+      tags: [cms-articles]
+      summary: Create article
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ArticleInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AdminArticle"
+
+  /admin/articles/{id}:
+    get:
+      operationId: getAdminArticle
+      tags: [cms-articles]
+      summary: Get single article (admin)
+      parameters:
+        - { name: id, in: path, required: true, schema: { type: integer } }
       responses:
         "200":
           description: Article
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Article"
+                $ref: "#/components/schemas/AdminArticle"
         "404":
           description: Not found
-
-    delete:
-      operationId: deleteArticle
-      tags: [articles]
-      summary: Delete an article
+    patch:
+      operationId: updateAdminArticle
+      tags: [cms-articles]
+      summary: Update article
       parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: integer
+        - { name: id, in: path, required: true, schema: { type: integer } }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ArticleUpdate"
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AdminArticle"
+    delete:
+      operationId: deleteAdminArticle
+      tags: [cms-articles]
+      summary: Delete article permanently
+      parameters:
+        - { name: id, in: path, required: true, schema: { type: integer } }
       responses:
         "204":
           description: Deleted
 
-  /articles/generate:
+  /admin/articles/{id}/publish:
     post:
-      operationId: generateArticle
-      tags: [articles]
-      summary: Start streaming article generation (SSE)
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/GenerateArticleInput"
-      responses:
-        "200":
-          description: SSE stream of article content
-          content:
-            text/event-stream:
-              schema:
-                type: string
-
-  /articles/{id}/publish:
-    post:
-      operationId: publishArticle
-      tags: [articles]
-      summary: Publish article to GitHub
+      operationId: publishAdminArticle
+      tags: [cms-articles]
+      summary: Publish article immediately
       parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: integer
+        - { name: id, in: path, required: true, schema: { type: integer } }
+      responses:
+        "200":
+          description: Published
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AdminArticle"
+
+  /admin/articles/{id}/draft:
+    post:
+      operationId: draftAdminArticle
+      tags: [cms-articles]
+      summary: Move article back to draft
+      parameters:
+        - { name: id, in: path, required: true, schema: { type: integer } }
+      responses:
+        "200":
+          description: Drafted
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AdminArticle"
+
+  /admin/articles/{id}/schedule:
+    post:
+      operationId: scheduleAdminArticle
+      tags: [cms-articles]
+      summary: Schedule article for future publish
+      parameters:
+        - { name: id, in: path, required: true, schema: { type: integer } }
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/PublishInput"
+              $ref: "#/components/schemas/ScheduleInput"
       responses:
         "200":
-          description: Publish result
+          description: Scheduled
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/PublishResult"
+                $ref: "#/components/schemas/AdminArticle"
 
-  /articles/stats:
-    get:
-      operationId: getArticleStats
-      tags: [articles]
-      summary: Get generation statistics
+  /admin/articles/{id}/archive:
+    post:
+      operationId: archiveAdminArticle
+      tags: [cms-articles]
+      summary: Archive article
+      parameters:
+        - { name: id, in: path, required: true, schema: { type: integer } }
       responses:
         "200":
-          description: Stats
+          description: Archived
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ArticleStats"
+                $ref: "#/components/schemas/AdminArticle"
 
-  /github/branches:
-    get:
-      operationId: listBranches
-      tags: [github]
-      summary: List branches in the GitHub repo
+  /admin/articles/{id}/restore:
+    post:
+      operationId: restoreAdminArticle
+      tags: [cms-articles]
+      summary: Restore archived article to draft
+      parameters:
+        - { name: id, in: path, required: true, schema: { type: integer } }
       responses:
         "200":
-          description: Branches
+          description: Restored
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AdminArticle"
+
+  /admin/articles/{id}/duplicate:
+    post:
+      operationId: duplicateAdminArticle
+      tags: [cms-articles]
+      summary: Duplicate article
+      parameters:
+        - { name: id, in: path, required: true, schema: { type: integer } }
+      responses:
+        "201":
+          description: Duplicated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AdminArticle"
+
+  /admin/articles/{id}/revisions:
+    get:
+      operationId: getAdminArticleRevisions
+      tags: [cms-articles]
+      summary: Get article revision history
+      parameters:
+        - { name: id, in: path, required: true, schema: { type: integer } }
+      responses:
+        "200":
+          description: Revisions
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/Branch"
+                  $ref: "#/components/schemas/ArticleRevision"
+
+  /admin/dashboard-stats:
+    get:
+      operationId: getAdminDashboardStats
+      tags: [cms-articles]
+      summary: Admin dashboard stats and recent activity
+      responses:
+        "200":
+          description: Dashboard stats
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DashboardStats"
+
+  # ─── CMS CATEGORIES ──────────────────────────────────────────────────────────
+
+  /admin/categories:
+    get:
+      operationId: listAdminCategories
+      tags: [cms-categories]
+      summary: List all categories
+      responses:
+        "200":
+          description: Categories
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Category"
+    post:
+      operationId: createAdminCategory
+      tags: [cms-categories]
+      summary: Create category
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CategoryInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Category"
+
+  /admin/categories/{id}:
+    patch:
+      operationId: updateAdminCategory
+      tags: [cms-categories]
+      summary: Update category
+      parameters:
+        - { name: id, in: path, required: true, schema: { type: integer } }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CategoryUpdate"
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Category"
+    delete:
+      operationId: deleteAdminCategory
+      tags: [cms-categories]
+      summary: Delete category
+      parameters:
+        - { name: id, in: path, required: true, schema: { type: integer } }
+      responses:
+        "204":
+          description: Deleted
+
+  # ─── CMS TAGS ────────────────────────────────────────────────────────────────
+
+  /admin/tags:
+    get:
+      operationId: listAdminTags
+      tags: [cms-tags]
+      summary: List all tags
+      responses:
+        "200":
+          description: Tags
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Tag"
+    post:
+      operationId: createAdminTag
+      tags: [cms-tags]
+      summary: Create tag
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TagInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Tag"
+
+  /admin/tags/{id}:
+    patch:
+      operationId: updateAdminTag
+      tags: [cms-tags]
+      summary: Update tag
+      parameters:
+        - { name: id, in: path, required: true, schema: { type: integer } }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TagUpdate"
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Tag"
+    delete:
+      operationId: deleteAdminTag
+      tags: [cms-tags]
+      summary: Delete tag
+      parameters:
+        - { name: id, in: path, required: true, schema: { type: integer } }
+      responses:
+        "204":
+          description: Deleted
+
+  # ─── CMS MEDIA ───────────────────────────────────────────────────────────────
+
+  /admin/media:
+    get:
+      operationId: listAdminMedia
+      tags: [cms-media]
+      summary: List media library
+      parameters:
+        - { name: page, in: query, schema: { type: integer, default: 1 } }
+        - { name: limit, in: query, schema: { type: integer, default: 40 } }
+        - { name: search, in: query, schema: { type: string } }
+      responses:
+        "200":
+          description: Media items
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MediaListResponse"
+
+  /admin/media/{id}:
+    patch:
+      operationId: updateAdminMedia
+      tags: [cms-media]
+      summary: Update media metadata
+      parameters:
+        - { name: id, in: path, required: true, schema: { type: integer } }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/MediaUpdate"
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MediaItem"
+    delete:
+      operationId: deleteAdminMedia
+      tags: [cms-media]
+      summary: Delete media item
+      parameters:
+        - { name: id, in: path, required: true, schema: { type: integer } }
+      responses:
+        "204":
+          description: Deleted
+
+  # ─── CMS SETTINGS ────────────────────────────────────────────────────────────
+
+  /admin/settings:
+    get:
+      operationId: getAdminSettings
+      tags: [cms-settings]
+      summary: Get site settings
+      responses:
+        "200":
+          description: Settings
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SiteSettings"
+    patch:
+      operationId: updateAdminSettings
+      tags: [cms-settings]
+      summary: Update site settings
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SiteSettingsUpdate"
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SiteSettings"
+
+  # ─── CMS HOMEPAGE ────────────────────────────────────────────────────────────
+
+  /admin/homepage-config:
+    get:
+      operationId: getAdminHomepageConfig
+      tags: [cms-homepage]
+      summary: Get homepage configuration
+      responses:
+        "200":
+          description: Homepage config
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HomepageConfig"
+    patch:
+      operationId: updateAdminHomepageConfig
+      tags: [cms-homepage]
+      summary: Update homepage configuration
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/HomepageConfigUpdate"
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HomepageConfig"
 
 components:
   schemas:
+
     HealthStatus:
       type: object
       properties:
         status:
           type: string
-      required:
-        - status
+      required: [status]
 
-    Article:
+    # ── ARTICLE SCHEMAS ──────────────────────────────────────────────────────
+
+    PublicArticle:
       type: object
-      required: [id, topic, category, status, createdAt]
+      required: [id, title, slug, status, createdAt]
       properties:
-        id:
-          type: integer
-        topic:
-          type: string
+        id:          { type: integer }
+        title:       { type: string }
+        slug:        { type: string }
+        excerpt:     { type: ["string", "null"] }
+        content:     { type: ["string", "null"] }
+        featuredImage: { type: ["string", "null"] }
+        game:        { type: ["string", "null"] }
+        status:      { type: string }
+        viewCount:   { type: integer }
+        readingTime: { type: ["integer", "null"] }
+        publishedAt: { type: ["string", "null"] }
+        updatedAt:   { type: ["string", "null"] }
+        createdAt:   { type: string }
+        seoTitle:    { type: ["string", "null"] }
+        metaDescription: { type: ["string", "null"] }
         category:
-          type: string
-        status:
-          type: string
-          enum: [pending, generating, done, error, published]
-        seoTitle:
-          type: ["string", "null"]
-        metaDescription:
-          type: ["string", "null"]
-        slug:
-          type: ["string", "null"]
-        content:
-          type: ["string", "null"]
-        wordCount:
-          type: ["integer", "null"]
-        githubUrl:
-          type: ["string", "null"]
-        publishedAt:
-          type: ["string", "null"]
-        createdAt:
-          type: string
+          nullable: true
+          oneOf:
+            - $ref: "#/components/schemas/Category"
+            - type: "null"
+        tags:
+          type: array
+          items:
+            $ref: "#/components/schemas/Tag"
 
-    GenerateArticleInput:
+    ArticleDetail:
       type: object
-      required: [topic, category]
+      required: [article]
       properties:
-        topic:
-          type: string
+        article:
+          $ref: "#/components/schemas/PublicArticle"
+        related:
+          type: array
+          items:
+            $ref: "#/components/schemas/PublicArticle"
+        breadcrumbs:
+          type: array
+          items:
+            $ref: "#/components/schemas/Breadcrumb"
+
+    ArticleListResponse:
+      type: object
+      required: [articles, total, page, limit]
+      properties:
+        articles:
+          type: array
+          items:
+            $ref: "#/components/schemas/PublicArticle"
+        total:   { type: integer }
+        page:    { type: integer }
+        limit:   { type: integer }
+
+    AdminArticle:
+      type: object
+      required: [id, title, slug, status, createdAt]
+      properties:
+        id:              { type: integer }
+        title:           { type: string }
+        slug:            { type: string }
+        excerpt:         { type: ["string", "null"] }
+        content:         { type: ["string", "null"] }
+        featuredImage:   { type: ["string", "null"] }
+        game:            { type: ["string", "null"] }
+        status:          { type: string }
+        viewCount:       { type: integer }
+        readingTime:     { type: ["integer", "null"] }
+        publishedAt:     { type: ["string", "null"] }
+        scheduledAt:     { type: ["string", "null"] }
+        updatedAt:       { type: ["string", "null"] }
+        createdAt:       { type: string }
+        seoTitle:        { type: ["string", "null"] }
+        metaDescription: { type: ["string", "null"] }
+        focusKeyword:    { type: ["string", "null"] }
+        canonicalUrl:    { type: ["string", "null"] }
+        ogImage:         { type: ["string", "null"] }
+        noIndex:         { type: boolean }
+        noFollow:        { type: boolean }
+        categoryId:      { type: ["integer", "null"] }
         category:
-          type: string
+          nullable: true
+          oneOf:
+            - $ref: "#/components/schemas/Category"
+            - type: "null"
+        tags:
+          type: array
+          items:
+            $ref: "#/components/schemas/Tag"
 
-    PublishInput:
+    AdminArticleListResponse:
       type: object
-      required: [branch, filename]
+      required: [articles, total, page, limit]
       properties:
-        branch:
-          type: string
-        filename:
-          type: string
-        commitMessage:
-          type: ["string", "null"]
+        articles:
+          type: array
+          items:
+            $ref: "#/components/schemas/AdminArticle"
+        total:  { type: integer }
+        page:   { type: integer }
+        limit:  { type: integer }
 
-    PublishResult:
+    ArticleInput:
       type: object
-      required: [success, url]
+      required: [title]
       properties:
-        success:
-          type: boolean
-        url:
-          type: string
-        message:
-          type: ["string", "null"]
+        title:           { type: string, minLength: 1 }
+        slug:            { type: string }
+        excerpt:         { type: string }
+        content:         { type: string }
+        featuredImage:   { type: string }
+        game:            { type: string }
+        status:          { type: string, enum: [draft, published, scheduled, archived] }
+        scheduledAt:     { type: string }
+        categoryId:      { type: integer }
+        tagIds:          { type: array, items: { type: integer } }
+        seoTitle:        { type: string }
+        metaDescription: { type: string }
+        focusKeyword:    { type: string }
+        canonicalUrl:    { type: string }
+        ogImage:         { type: string }
+        noIndex:         { type: boolean }
+        noFollow:        { type: boolean }
 
-    ArticleStats:
+    ArticleUpdate:
       type: object
-      required: [total, published, generating, totalWords]
       properties:
-        total:
-          type: integer
-        published:
-          type: integer
-        generating:
-          type: integer
-        totalWords:
-          type: integer
+        title:           { type: string, minLength: 1 }
+        slug:            { type: string }
+        excerpt:         { type: string }
+        content:         { type: string }
+        featuredImage:   { type: string }
+        game:            { type: string }
+        status:          { type: string, enum: [draft, published, scheduled, archived] }
+        scheduledAt:     { type: string }
+        categoryId:      { type: integer }
+        tagIds:          { type: array, items: { type: integer } }
+        seoTitle:        { type: string }
+        metaDescription: { type: string }
+        focusKeyword:    { type: string }
+        canonicalUrl:    { type: string }
+        ogImage:         { type: string }
+        noIndex:         { type: boolean }
+        noFollow:        { type: boolean }
 
-    Branch:
+    ArticleRevision:
+      type: object
+      required: [id, articleId, createdAt]
+      properties:
+        id:        { type: integer }
+        articleId: { type: integer }
+        title:     { type: ["string", "null"] }
+        content:   { type: ["string", "null"] }
+        createdAt: { type: string }
+
+    ScheduleInput:
+      type: object
+      required: [scheduledAt]
+      properties:
+        scheduledAt: { type: string }
+
+    # ── CATEGORY SCHEMAS ─────────────────────────────────────────────────────
+
+    Category:
+      type: object
+      required: [id, name, slug]
+      properties:
+        id:           { type: integer }
+        name:         { type: string }
+        slug:         { type: string }
+        description:  { type: ["string", "null"] }
+        color:        { type: ["string", "null"] }
+        parentId:     { type: ["integer", "null"] }
+        articleCount: { type: integer }
+        createdAt:    { type: string }
+
+    CategoryInput:
       type: object
       required: [name]
       properties:
-        name:
-          type: string
+        name:        { type: string, minLength: 1 }
+        slug:        { type: string }
+        description: { type: string }
+        color:       { type: string }
+        parentId:    { type: integer }
+
+    CategoryUpdate:
+      type: object
+      properties:
+        name:        { type: string, minLength: 1 }
+        slug:        { type: string }
+        description: { type: string }
+        color:       { type: string }
+        parentId:    { type: integer }
+
+    # ── TAG SCHEMAS ──────────────────────────────────────────────────────────
+
+    Tag:
+      type: object
+      required: [id, name, slug]
+      properties:
+        id:           { type: integer }
+        name:         { type: string }
+        slug:         { type: string }
+        articleCount: { type: integer }
+        createdAt:    { type: string }
+
+    TagInput:
+      type: object
+      required: [name]
+      properties:
+        name: { type: string, minLength: 1 }
+        slug: { type: string }
+
+    TagUpdate:
+      type: object
+      properties:
+        name: { type: string, minLength: 1 }
+        slug: { type: string }
+
+    # ── MEDIA SCHEMAS ────────────────────────────────────────────────────────
+
+    MediaItem:
+      type: object
+      required: [id, url, filename, createdAt]
+      properties:
+        id:        { type: integer }
+        url:       { type: string }
+        filename:  { type: string }
+        mimeType:  { type: ["string", "null"] }
+        size:      { type: ["integer", "null"] }
+        width:     { type: ["integer", "null"] }
+        height:    { type: ["integer", "null"] }
+        alt:       { type: ["string", "null"] }
+        caption:   { type: ["string", "null"] }
+        createdAt: { type: string }
+
+    MediaUpdate:
+      type: object
+      properties:
+        alt:     { type: string }
+        caption: { type: string }
+
+    MediaListResponse:
+      type: object
+      required: [items, total, page, limit]
+      properties:
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/MediaItem"
+        total: { type: integer }
+        page:  { type: integer }
+        limit: { type: integer }
+
+    # ── SETTINGS SCHEMAS ─────────────────────────────────────────────────────
+
+    SiteSettings:
+      type: object
+      required: [siteName]
+      properties:
+        siteName:       { type: string }
+        siteDescription: { type: ["string", "null"] }
+        siteUrl:        { type: ["string", "null"] }
+        logoUrl:        { type: ["string", "null"] }
+        faviconUrl:     { type: ["string", "null"] }
+        twitterHandle:  { type: ["string", "null"] }
+        facebookUrl:    { type: ["string", "null"] }
+        youtubeUrl:     { type: ["string", "null"] }
+        discordUrl:     { type: ["string", "null"] }
+        contactEmail:   { type: ["string", "null"] }
+        googleAnalyticsId: { type: ["string", "null"] }
+        adsenseId:      { type: ["string", "null"] }
+        updatedAt:      { type: ["string", "null"] }
+
+    SiteSettingsUpdate:
+      type: object
+      properties:
+        siteName:        { type: string }
+        siteDescription: { type: string }
+        siteUrl:         { type: string }
+        logoUrl:         { type: string }
+        faviconUrl:      { type: string }
+        twitterHandle:   { type: string }
+        facebookUrl:     { type: string }
+        youtubeUrl:      { type: string }
+        discordUrl:      { type: string }
+        contactEmail:    { type: string }
+        googleAnalyticsId: { type: string }
+        adsenseId:       { type: string }
+
+    # ── HOMEPAGE SCHEMAS ─────────────────────────────────────────────────────
+
+    HomepageConfig:
+      type: object
+      properties:
+        heroTitle:       { type: ["string", "null"] }
+        heroSubtitle:    { type: ["string", "null"] }
+        heroImage:       { type: ["string", "null"] }
+        featuredIds:     { type: array, items: { type: integer } }
+        editorPickIds:   { type: array, items: { type: integer } }
+        showTrending:    { type: boolean }
+        showLatest:      { type: boolean }
+        showPopular:     { type: boolean }
+        showByGame:      { type: boolean }
+        updatedAt:       { type: ["string", "null"] }
+
+    HomepageConfigUpdate:
+      type: object
+      properties:
+        heroTitle:       { type: string }
+        heroSubtitle:    { type: string }
+        heroImage:       { type: string }
+        featuredIds:     { type: array, items: { type: integer } }
+        editorPickIds:   { type: array, items: { type: integer } }
+        showTrending:    { type: boolean }
+        showLatest:      { type: boolean }
+        showPopular:     { type: boolean }
+        showByGame:      { type: boolean }
+
+    HomepageData:
+      type: object
+      properties:
+        config:
+          $ref: "#/components/schemas/HomepageConfig"
+        featured:
+          type: array
+          items:
+            $ref: "#/components/schemas/PublicArticle"
+        trending:
+          type: array
+          items:
+            $ref: "#/components/schemas/PublicArticle"
+        latest:
+          type: array
+          items:
+            $ref: "#/components/schemas/PublicArticle"
+        popular:
+          type: array
+          items:
+            $ref: "#/components/schemas/PublicArticle"
+        editorPicks:
+          type: array
+          items:
+            $ref: "#/components/schemas/PublicArticle"
+        categories:
+          type: array
+          items:
+            $ref: "#/components/schemas/Category"
+
+    PublicStats:
+      type: object
+      properties:
+        totalArticles: { type: integer }
+        totalCategories: { type: integer }
+        totalGames: { type: integer }
+        totalViews: { type: integer }
+
+    DashboardStats:
+      type: object
+      properties:
+        totalArticles:     { type: integer }
+        publishedArticles: { type: integer }
+        draftArticles:     { type: integer }
+        scheduledArticles: { type: integer }
+        totalCategories:   { type: integer }
+        totalTags:         { type: integer }
+        totalMedia:        { type: integer }
+        totalViews:        { type: integer }
+        recentArticles:
+          type: array
+          items:
+            $ref: "#/components/schemas/AdminArticle"
+
+    # ── AUTH SCHEMAS ─────────────────────────────────────────────────────────
+
+    AdminLoginInput:
+      type: object
+      required: [username, password]
+      properties:
+        username: { type: string }
+        password: { type: string }
+
+    AdminSession:
+      type: object
+      required: [id, username]
+      properties:
+        id:       { type: integer }
+        username: { type: string }
+
+    # ── MISC SCHEMAS ─────────────────────────────────────────────────────────
+
+    Breadcrumb:
+      type: object
+      required: [label, href]
+      properties:
+        label: { type: string }
+        href:  { type: string }

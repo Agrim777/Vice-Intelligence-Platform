@@ -1,0 +1,1 @@
+- [Vice Intelligence Platform architecture](vice-platform.md) — GTA gaming portal CMS: Express backend, Drizzle/Postgres, React+Vite frontend, admin at /secure-admin-portal
