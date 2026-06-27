@@ -21,6 +21,100 @@ const ADMIN_ITEMS = [
   { href: "/admin/articles", label: "Library" },
 ];
 
+function GamingLogo() {
+  return (
+    <svg viewBox="0 0 200 40" className="h-9 w-auto" xmlns="http://www.w3.org/2000/svg" aria-label="GTA6Guide.in">
+      <defs>
+        <linearGradient id="logoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="#ff1493" />
+          <stop offset="60%" stopColor="#ff69b4" />
+          <stop offset="100%" stopColor="#ff1493" />
+        </linearGradient>
+        <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+          <feGaussianBlur stdDeviation="1.5" result="blur" />
+          <feMerge>
+            <feMergeNode in="blur" />
+            <feMergeNode in="SourceGraphic" />
+          </feMerge>
+        </filter>
+        <filter id="glowText" x="-10%" y="-10%" width="120%" height="120%">
+          <feGaussianBlur stdDeviation="1" result="blur" />
+          <feMerge>
+            <feMergeNode in="blur" />
+            <feMergeNode in="SourceGraphic" />
+          </feMerge>
+        </filter>
+      </defs>
+
+      {/* Icon: stylized star/shield with 6 inside */}
+      <g filter="url(#glow)">
+        {/* Hexagon-ish star shape */}
+        <polygon
+          points="20,3 27,8 30,16 27,24 20,29 13,24 10,16 13,8"
+          fill="none"
+          stroke="url(#logoGrad)"
+          strokeWidth="1.8"
+        />
+        {/* Inner highlight lines */}
+        <line x1="20" y1="3" x2="20" y2="8" stroke="#ff1493" strokeWidth="1" opacity="0.6" />
+        <line x1="27" y1="8" x2="23" y2="11" stroke="#ff1493" strokeWidth="1" opacity="0.6" />
+        <line x1="13" y1="8" x2="17" y2="11" stroke="#ff1493" strokeWidth="1" opacity="0.6" />
+        {/* The 6 */}
+        <text
+          x="20"
+          y="22"
+          textAnchor="middle"
+          fontFamily="'Arial Black', Arial, sans-serif"
+          fontWeight="900"
+          fontSize="14"
+          fill="url(#logoGrad)"
+          letterSpacing="-0.5"
+        >6</text>
+      </g>
+
+      {/* GTA text */}
+      <g filter="url(#glowText)">
+        <text
+          x="36"
+          y="22"
+          fontFamily="'Arial Black', Impact, Arial, sans-serif"
+          fontWeight="900"
+          fontSize="18"
+          fill="url(#logoGrad)"
+          letterSpacing="1"
+        >GTA</text>
+      </g>
+
+      {/* GUIDE text */}
+      <text
+        x="78"
+        y="22"
+        fontFamily="'Arial Black', Impact, Arial, sans-serif"
+        fontWeight="900"
+        fontSize="18"
+        fill="white"
+        letterSpacing="0.5"
+      >GUIDE</text>
+
+      {/* .IN badge */}
+      <rect x="148" y="12" width="22" height="11" rx="2" fill="#ff1493" opacity="0.15" stroke="#ff1493" strokeWidth="0.8" />
+      <text
+        x="159"
+        y="21"
+        textAnchor="middle"
+        fontFamily="'Arial', sans-serif"
+        fontWeight="700"
+        fontSize="7"
+        fill="#ff1493"
+        letterSpacing="0.5"
+      >.IN</text>
+
+      {/* Bottom accent line */}
+      <line x1="36" y1="26" x2="143" y2="26" stroke="url(#logoGrad)" strokeWidth="0.8" opacity="0.4" />
+    </svg>
+  );
+}
+
 export function Layout({ children }: { children: React.ReactNode }) {
   const [location] = useLocation();
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -37,9 +131,8 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <div className="max-w-7xl mx-auto px-4 h-14 flex items-center gap-4">
           {/* Logo */}
           <Link href="/">
-            <div className="flex items-center gap-1.5 cursor-pointer shrink-0">
-              <span className="font-headline text-2xl text-primary leading-none">gta6</span>
-              <span className="font-headline text-2xl text-foreground leading-none">guide</span>
+            <div className="cursor-pointer shrink-0 flex items-center">
+              <GamingLogo />
             </div>
           </Link>
 
@@ -80,6 +173,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
           <button
             className="md:hidden ml-auto p-2 text-muted-foreground hover:text-foreground"
             onClick={() => setMobileOpen(!mobileOpen)}
+            aria-label="Toggle menu"
           >
             {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
           </button>
@@ -143,9 +237,8 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <div className="max-w-7xl mx-auto px-6 py-10">
           <div className="grid md:grid-cols-4 gap-8 mb-8">
             <div>
-              <div className="flex items-center gap-1.5 mb-3">
-                <span className="font-headline text-xl text-primary">gta6</span>
-                <span className="font-headline text-xl text-foreground">guide</span>
+              <div className="mb-3">
+                <GamingLogo />
               </div>
               <p className="text-xs text-muted-foreground leading-relaxed">
                 The definitive GTA resource — cheat codes, guides, vehicles, maps, and news for every Grand Theft Auto game from GTA 1 to GTA 6.
@@ -165,25 +258,30 @@ export function Layout({ children }: { children: React.ReactNode }) {
               </div>
             </div>
             <div>
-              <div className="text-xs font-bold text-foreground uppercase tracking-widest mb-3">Databases</div>
+              <div className="text-xs font-bold text-foreground uppercase tracking-widest mb-3">GTA 6 Pages</div>
               <div className="space-y-1.5">
-                {["/vehicles", "/weapons", "/maps", "/gear"].map((href) => {
-                  const labels: Record<string, string> = { "/vehicles": "Vehicle Database", "/weapons": "Weapons Guide", "/maps": "GTA Maps", "/gear": "GTA Gaming Gear" };
-                  return (
-                    <Link key={href} href={href}>
-                      <div className="text-xs text-muted-foreground hover:text-foreground cursor-pointer transition-colors">{labels[href]}</div>
-                    </Link>
-                  );
-                })}
+                {[
+                  ["/gta6/release-date", "Release Date"],
+                  ["/gta6/editions", "Editions Guide"],
+                  ["/gta6/pre-order", "Pre-Order Guide"],
+                  ["/gta6/map-size", "Map Size vs GTA 5"],
+                  ["/gta6/story", "Story & Characters"],
+                  ["/gta6/easter-eggs", "Easter Eggs"],
+                ].map(([href, label]) => (
+                  <Link key={href} href={href}>
+                    <div className="text-xs text-muted-foreground hover:text-foreground cursor-pointer transition-colors">{label}</div>
+                  </Link>
+                ))}
               </div>
             </div>
             <div>
-              <div className="text-xs font-bold text-foreground uppercase tracking-widest mb-3">GTA 6</div>
+              <div className="text-xs font-bold text-foreground uppercase tracking-widest mb-3">GTA 6 — Nov 19, 2026</div>
               <div className="space-y-1.5 text-xs text-muted-foreground">
-                <div>Release: Nov 19, 2026</div>
-                <div>Platform: PS5 / Xbox Series X</div>
-                <div>Setting: Vice City (Miami)</div>
+                <div>Platform: PS5 / Xbox Series X|S</div>
+                <div>Setting: Vice City / Leonida</div>
                 <div>Protagonists: Lucia & Jason</div>
+                <div>Standard: $79.99 · Ultimate: $99.99</div>
+                <div>Pre-orders: Open since June 25, 2026</div>
               </div>
             </div>
           </div>

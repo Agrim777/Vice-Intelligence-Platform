@@ -34,6 +34,10 @@ import { GTA6PreOrderPage } from "@/pages/gta6/pre-order";
 import { GTA6TrailerMusicPage } from "@/pages/gta6/trailer-music";
 import { GTA6EditionsPage } from "@/pages/gta6/editions";
 import { GTA6OnlinePage } from "@/pages/gta6/online";
+import { GTA6MapSizePage } from "@/pages/gta6/map-size";
+import { GTA6StoryPage } from "@/pages/gta6/story";
+import { GTA6EasterEggsPage } from "@/pages/gta6/easter-eggs";
+import { GTA6DownloadSizePage } from "@/pages/gta6/download-size";
 
 // GTA 5 dedicated pages
 import { GTA5MoneyCheatPage } from "@/pages/gta5/money-cheat";
@@ -75,6 +79,7 @@ function Router() {
         <Route path="/gta6/release-date" component={GTA6ReleaseDatePage} />
         <Route path="/gta6/characters" component={GTA6CharactersPage} />
         <Route path="/gta6/map" component={GTA6MapPage} />
+        <Route path="/gta6/map-size" component={GTA6MapSizePage} />
         <Route path="/gta6/price" component={GTA6PricePage} />
         <Route path="/gta6/platforms" component={GTA6PlatformsPage} />
         <Route path="/gta6/gameplay" component={GTA6GameplayPage} />
@@ -84,6 +89,9 @@ function Router() {
         <Route path="/gta6/trailer-music" component={GTA6TrailerMusicPage} />
         <Route path="/gta6/editions" component={GTA6EditionsPage} />
         <Route path="/gta6/online" component={GTA6OnlinePage} />
+        <Route path="/gta6/story" component={GTA6StoryPage} />
+        <Route path="/gta6/easter-eggs" component={GTA6EasterEggsPage} />
+        <Route path="/gta6/download-size" component={GTA6DownloadSizePage} />
 
         {/* GTA 5 SEO pages */}
         <Route path="/gta5/money-cheat" component={GTA5MoneyCheatPage} />
