@@ -6,6 +6,7 @@ import { Layout } from "@/components/layout";
 
 import { Home } from "@/pages/home";
 import { News } from "@/pages/news";
+import { NewsArticlePage } from "@/pages/news-article";
 import { Games } from "@/pages/games";
 import { Guides } from "@/pages/guides";
 import { Cheats } from "@/pages/cheats";
@@ -31,6 +32,8 @@ import { GTA6SysReqPage } from "@/pages/gta6/system-requirements";
 import { GTA6TrailerPage } from "@/pages/gta6/trailer";
 import { GTA6PreOrderPage } from "@/pages/gta6/pre-order";
 import { GTA6TrailerMusicPage } from "@/pages/gta6/trailer-music";
+import { GTA6EditionsPage } from "@/pages/gta6/editions";
+import { GTA6OnlinePage } from "@/pages/gta6/online";
 
 // GTA 5 dedicated pages
 import { GTA5MoneyCheatPage } from "@/pages/gta5/money-cheat";
@@ -59,6 +62,7 @@ function Router() {
         {/* Public gamer site */}
         <Route path="/" component={Home} />
         <Route path="/news" component={News} />
+        <Route path="/news/:id" component={NewsArticlePage} />
         <Route path="/games" component={Games} />
         <Route path="/guides" component={Guides} />
         <Route path="/cheats" component={Cheats} />
@@ -78,6 +82,8 @@ function Router() {
         <Route path="/gta6/trailer" component={GTA6TrailerPage} />
         <Route path="/gta6/pre-order" component={GTA6PreOrderPage} />
         <Route path="/gta6/trailer-music" component={GTA6TrailerMusicPage} />
+        <Route path="/gta6/editions" component={GTA6EditionsPage} />
+        <Route path="/gta6/online" component={GTA6OnlinePage} />
 
         {/* GTA 5 SEO pages */}
         <Route path="/gta5/money-cheat" component={GTA5MoneyCheatPage} />
