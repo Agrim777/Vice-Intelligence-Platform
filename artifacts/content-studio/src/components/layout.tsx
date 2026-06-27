@@ -67,7 +67,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
           <div className="hidden md:flex items-center gap-3 ml-auto shrink-0">
             <div className="flex items-center gap-1.5 text-xs text-muted-foreground whitespace-nowrap">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-[0_0_6px_rgba(34,197,94,0.8)]" />
-              GTA 6 Fall 2025
+              GTA 6 — Nov 19, 2026
             </div>
             <Link href="/admin">
               <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-md border border-border text-xs font-medium text-muted-foreground hover:text-foreground hover:border-primary/30 transition-colors cursor-pointer">
@@ -144,8 +144,8 @@ export function Layout({ children }: { children: React.ReactNode }) {
           <div className="grid md:grid-cols-4 gap-8 mb-8">
             <div>
               <div className="flex items-center gap-1.5 mb-3">
-                <span className="font-headline text-xl text-primary">VICE</span>
-                <span className="font-headline text-xl text-foreground">INTELLIGENCE</span>
+                <span className="font-headline text-xl text-primary">gta6</span>
+                <span className="font-headline text-xl text-foreground">guide</span>
               </div>
               <p className="text-xs text-muted-foreground leading-relaxed">
                 The definitive GTA resource — cheat codes, guides, vehicles, maps, and news for every Grand Theft Auto game from GTA 1 to GTA 6.
@@ -180,7 +180,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
             <div>
               <div className="text-xs font-bold text-foreground uppercase tracking-widest mb-3">GTA 6</div>
               <div className="space-y-1.5 text-xs text-muted-foreground">
-                <div>Release: Fall 2025</div>
+                <div>Release: Nov 19, 2026</div>
                 <div>Platform: PS5 / Xbox Series X</div>
                 <div>Setting: Vice City (Miami)</div>
                 <div>Protagonists: Lucia & Jason</div>
