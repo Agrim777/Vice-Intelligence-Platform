@@ -38,8 +38,8 @@ export function Layout({ children }: { children: React.ReactNode }) {
           {/* Logo */}
           <Link href="/">
             <div className="flex items-center gap-1.5 cursor-pointer shrink-0">
-              <span className="font-headline text-2xl text-primary leading-none">VICE</span>
-              <span className="font-headline text-2xl text-foreground leading-none">INTEL</span>
+              <span className="font-headline text-2xl text-primary leading-none">gta6</span>
+              <span className="font-headline text-2xl text-foreground leading-none">guide</span>
             </div>
           </Link>
 

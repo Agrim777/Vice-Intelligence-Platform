@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { Link } from "wouter";
 import { ArrowRight, BookOpen, Gamepad2, Star, ChevronRight, Flame, Clock, Newspaper, Map, ShoppingBag, Car, ExternalLink, TrendingUp, Eye, HelpCircle } from "lucide-react";
+import { Countdown } from "@/components/countdown";
 import { GTA_GAMES } from "@/data/games";
 import { NEWS, TICKER_ITEMS } from "@/data/news";
 import { GUIDES } from "@/data/guides";
@@ -196,6 +197,9 @@ export function Home() {
                     <div className="text-sm font-semibold text-foreground">{value}</div>
                   </div>
                 ))}
+              </div>
+              <div className="mt-4">
+                <Countdown />
               </div>
             </div>
             <div className="flex flex-col gap-2 w-full md:w-auto shrink-0">
